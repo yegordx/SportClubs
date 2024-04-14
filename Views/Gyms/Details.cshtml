@@ -1,0 +1,33 @@
+﻿@model SportClubs1.Data.Gym
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <h1>@Model.Name</h1>
+    <dd>@Model.Address</dd>
+    <link rel="stylesheet" type="text/css" href="GymsDetails.css">
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <dl>
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(@Model.Image)" class="card-img-top" alt="Зображення спортзалу">
+        </dl>
+    </div>
+
+   @*  <div class="form-container">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Address" />
+            <button type="submit">Delete</button>
+        </form>
+        <a class="back-link" asp-action="Index">Back to List</a>
+    </div> *@
+</div>
+
+</body>
+</html>

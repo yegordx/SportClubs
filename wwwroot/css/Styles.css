@@ -1,0 +1,11 @@
+﻿
+.card-img-top {
+    width: 400px;
+    height: 265px;
+}
+
+.col-md-4 {
+    border: 1px solid #ccc; /* товщина, стиль і колір рамки */
+    border-radius: 5px; /* закруглені кути */
+    padding: 10px; /* відступ від внутрішнього вмісту до рамки */
+}
