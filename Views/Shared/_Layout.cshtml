@@ -1,25 +1,29 @@
 ﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Identity
+@using SportClubs1.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SportClubs</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SportClubs1.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="/css/Styles.css" asp-append-version="true" />
     
 </head>
 <body>
+    <div class="wrapper">
     <header>
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Світ Спорту</a>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Світ Спорту</a>
+               
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Головна</a>
@@ -29,25 +33,85 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Політика приватності</a>
                         </li>
-                    </ul>
-                </div>
-            </div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                    <li class ="nav-item">
+                        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+                            <ul>
+                                <li>
+                                    <a href="#settings">Мій профіль</a>
+                                </li>
+                                <li>
+                                    <a href="Identity/Account/Logout">Вийти з акаунту</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                    <li class="nav-item">
+                        <a>Профіль</a>
+                        <ul>
+                            <li>
+                                <a href="Identity/Account/Login">Увійти</a>
+                            </li>
+                            <li>
+                                <a href="Identity/Account/Register">Зареєструватися</a>
+                            </li>
+                        </ul>
+                    </li>
+                    }
+                        @{
+                            var isAdmin = false;
+                            var isStaff = false;
+                            @if (SignInManager.IsSignedIn(User)) 
+                    { 
+                    var applicationUser = await UserManager.GetUserAsync(User); 
+                    if (applicationUser is not null) 
+                    {
+                                    isAdmin = await UserManager.IsInRoleAsync(applicationUser, "Administrator");
+                                    isStaff = await UserManager.IsInRoleAsync(applicationUser, "Staff");
+                    } 
+                    } 
+ 
+                    @if (isAdmin || isStaff)
+                        {
+                            <li class ="nav-item">
+                            <a>Управління</a>
+                            <ul>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Клієнти</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Staffs" asp-action="Index">Персонал</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="TrainingMachines" asp-action="Index">Тренажери</a>
+                                </li>
+                            </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+           
+            @* <div class="container-fluid" <partial name="_LoginPartial" />> *@
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+    @* <footer class="border-top footer text-muted" >
         <div class="container">
             &copy; 2024 - SportClubs1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

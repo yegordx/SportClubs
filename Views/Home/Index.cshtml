@@ -2,7 +2,74 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@model SportClubs1.Data.HomeViewModel
+
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мережа Спортивних Клубів</title>
+    <link rel="stylesheet" href="~/css/GymsDetails.css" />
+</head>
+<body>
+    <p>Вітаємо в нашій мережі спортивних клубів</p>
+
+    <div class="block">
+        <p>Тут ви знайдете:</p>
+
+        <div class="card-set">
+            <div class="title">Більше @Model.Gyms.Count() спортзалів</div>
+            <div class="card-group">
+                @foreach (var item in Model.Gyms)
+                {
+                    <div class="card">
+                        <img src="data:image /jpeg;base64,@Convert.ToBase64String(item.Image)">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                        </div>
+                    </div>
+                }
+            </div>
+            <a href=" @Url.Action("Index", "Gyms") button type="button" class="btn btn-primary">Дізнатися більше</a>
+        </div>
+
+        <div class="card-set">
+            <div class="title">@Model.Staffs.Count() професіональних тренерів</div>
+            <div class="card-group">
+                @foreach (var person in Model.Staffs)
+                {
+                    <div class="card">
+                        @if (person.Pfp == null)
+                        {
+                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="No profile picture" />
+                        }
+                        else
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(person.Pfp)" alt="~staffpfp/none.jpg">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@person.Name @person.Sername</h5>
+                            <p class="card-text">@person.Profession</p>
+                            @* <a href="#" class="btn btn-primary">Go somewhere</a> *@
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="list-set">
+            <div class="title">Найновіші тренажери</div>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.TrainingMachines)
+                    {
+                        <li class="list-group-item">@item.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <p>Долучайтеся самі, кличте друзів та знаходьте нових, адже наша мережа об'єднує @Model.Clients.Count() людей!</p>
+</body>
+</html>

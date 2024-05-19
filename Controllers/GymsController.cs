@@ -33,13 +33,23 @@ namespace SportClubs1.Controllers
             }
 
             var gym = await _context.Gyms
+                .Include(g => g.Staff)
                 .FirstOrDefaultAsync(m => m.Address == id);
+
+            gym.TrainingMachines = await _context.TrainingMachines
+                .Where(tm => tm.GymAddress == id)
+                .ToListAsync();
+
+            gym.Clients = await _context.Clients
+                .Where(c => c.GymAddresses.Any(ga => ga.Address == id))
+                .ToListAsync();
             if (gym == null)
             {
                 return NotFound();
             }
 
-            return View(gym);
+           return View(gym);
+           //return RedirectToAction()
         }
 
         // GET: Gyms/Create

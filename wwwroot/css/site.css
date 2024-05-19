@@ -1,22 +1,78 @@
-html {
-  font-size: 14px;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    list-style: none;
+    text-decoration: none;
 }
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+html,
 body {
-  margin-bottom: 60px;
+    height: 100vh;
+    background: #b992d0;
+    background-size: cover;
+    background-position: center;
+}
+.wrapper {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+navbar {
+    position: absolute;
+    z-index: 1000; /* Встановлюємо вищий z-index */
+}
+main{
+    flex: 1 1 auto;
+}
+header {
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8%;
+    box-shadow: 0 5px 10px;
+}
+
+footer {
+    margin-top: auto;
+    background: #ffffff;
+    color: #000000;
+}
+
+header nav ul li {
+    position: relative;
+    float: left;
+}
+header nav ul li a {
+    padding: 15px;
+    color: #000000;
+    font-size: 16px;
+    display: block;
+}
+
+header nav ul li a:hover {
+    background: #000000;
+    color: #ffffff;
+}
+
+nav ul li ul {
+    position: absolute;
+    left: 0;
+    width: 180px;
+    background: #ffffff;
+    display: none;
+}
+
+nav ul li ul li{
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.1);
+}
+
+nav ul li:hover > ul {
+    display: initial;
 }

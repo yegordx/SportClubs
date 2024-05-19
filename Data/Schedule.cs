@@ -7,7 +7,7 @@ public partial class Schedule
 {
     public int Id { get; set; }
 
-    public byte HourPerDay { get; set; }
+    public int HourPerDay { get; set; }
 
     public bool Monday { get; set; }
 

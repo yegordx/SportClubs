@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SportClubs1.Data;
 using SportClubs1.Models;
 using System.Diagnostics;
 
@@ -8,14 +10,27 @@ namespace SportClubs1.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public readonly SportClubsContext _context;
+        public HomeController(SportClubsContext context)
         {
-            _logger = logger;
+            _context = context;
         }
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
 
         public IActionResult Index()
         {
-            return View();
+            var model = new HomeViewModel
+            {
+                Gyms = _context.Gyms.ToList(),
+                Staffs = _context.Staff.ToList(),
+                TrainingMachines = _context.TrainingMachines.ToList(),
+                Clients = _context.Clients.ToList()
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -4,62 +4,144 @@
     ViewData["Title"] = "Index";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/GymsDetails.css" />
+</head>
+
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<body>
+    @if (Model.Count() != 0)
+    {
+        <div class="card-group">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    @if (item.Pfp != null)
+                    {
+                        <img src="data:image /jpeg;base64,@Convert.ToBase64String(item.Pfp)">
+                    }
+                    else
+                    {
+                        <img src="~staffpfp / none.jpg" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name @item.Sername</h5>
+                        <a href=" @Url.Action("Details", "Staffs", new { id = item.StaffId})" button type="button" class="btn btn-primary">Детальніше</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</body>
+<h2>Графік роботи персоналу</h2>
+
+<table>
+    <tr>
+        <th>День тижня</th>
+        <th>Понеділок</th>
+        <th>Вівторок</th>
+        <th>Середа</th>
+        <th>Четвер</th>
+        <th>П'ятниця</th>
+        <th>Субота</th>
+        <th>Неділя</th>
+    </tr>
+    <tr>
+        @foreach (var person in Model)
+        {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sername)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Profession)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pfp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GymAddressNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Schedule)
-            </th>
-            <th></th>
+            <td>@person.Name</td>
+                @if (person.Schedule.Monday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
+                @if (person.Schedule.Tuesday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
+                @if (person.Schedule.Wednesday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
+                @if (person.Schedule.Thursday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
+                @if (person.Schedule.Friday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
+                @if (person.Schedule.Saturday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
+                @if (person.Schedule.Sunday)
+                {
+                <td>
+                    ✓
+                </td>
+                }
+                else
+                {
+                <td>
+                    ✗
+                </td>
+                }
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sername)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Profession)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pfp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GymAddressNavigation.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Schedule.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.StaffId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StaffId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StaffId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+        }
+
+    <!-- Додайте інші рядки для інших працівників тут -->
+</table>
 </table>

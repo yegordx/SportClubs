@@ -1,13 +1,44 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using SportClubs1.Areas.Identity.Pages.Account;
 using SportClubs1.Data;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SportClubsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(SportClubsContext))));
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationIdentityContext>();
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationIdentityContext>();
+
+builder.Services
+ .AddDbContext<ApplicationIdentityContext>(options =>
+
+options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(ApplicationIdentityContext)), sqlOptions =>
+    sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name)));
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+
+// Add services to the container.
 var app = builder.Build();
+
+
+
+
+if (app.Environment.IsDevelopment())
+{
+    await app.InitializeRolesAsync();
+    await app.InitializeDefaultUsersAsync(
+        app.Configuration.GetSection("IdentityDefaults: Admin"),
+        app.Configuration.GetSection("IdentityDefaults: Client"),
+        app.Configuration.GetSection("IdentityDefaults: Staff"));
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -21,6 +52,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapRazorPages();
 
 app.UseAuthorization();
 
