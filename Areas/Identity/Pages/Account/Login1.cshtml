@@ -1,0 +1,27 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="~/css/Login.css" asp-append-version="true" />
+</head>
+
+<body>
+    <div action="wrapper">
+        <form id="account" method="post">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" placeholder="Username" required />
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Password" required />
+            </div>
+        </form>
+    </div>
+</body>

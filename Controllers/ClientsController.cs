@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SportClubs1.Data;
 
 namespace SportClubs1.Controllers
 {
+
     public class ClientsController : Controller
     {
         private readonly SportClubsContext _context;
@@ -19,6 +21,7 @@ namespace SportClubs1.Controllers
         }
 
         // GET: Clients
+        [Authorize(Roles = "Administrator,Staff")]
         public async Task<IActionResult> Index()
         {
             var sportClubsContext = _context.Clients.Include(c => c.Subscription);
