@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,6 @@ using SportClubs1.Data;
 
 namespace SportClubs1.Controllers
 {
-
     public class ClientsController : Controller
     {
         private readonly SportClubsContext _context;
@@ -21,11 +19,28 @@ namespace SportClubs1.Controllers
         }
 
         // GET: Clients
-        [Authorize(Roles = "Administrator,Staff")]
         public async Task<IActionResult> Index()
         {
             var sportClubsContext = _context.Clients.Include(c => c.Subscription);
             return View(await sportClubsContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> DetailsLogin(string login)
+        {
+            if (login == null)
+            {
+                return NotFound();
+            }
+
+            var client = await _context.Clients
+                .Include(c => c.Subscription)
+                .FirstOrDefaultAsync(m => m.Login == login);
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            return View(client);
         }
 
         // GET: Clients/Details/5
@@ -48,9 +63,10 @@ namespace SportClubs1.Controllers
         }
 
         // GET: Clients/Create
-        public IActionResult Create()
+        public IActionResult Create(string login)
         {
             ViewData["SubscriptionId"] = new SelectList(_context.Subscriptions, "Id", "Id");
+            ViewData["Login"] = login;
             return View();
         }
 
@@ -59,16 +75,20 @@ namespace SportClubs1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SubscriptionId,Name,Surname,Weight,Height,Age,Pfp")] Client client)
+        public async Task<IActionResult> Create([Bind("Id,SubscriptionId,Name,Surname,Weight,Height,Age,Login")] Client client, IFormFile Pfp)
         {
-            if (ModelState.IsValid)
+            if (Pfp != null && Pfp.Length > 0)
             {
-                _context.Add(client);
+                using (var memoryStream = new MemoryStream())
+                {
+                    await Pfp.CopyToAsync(memoryStream);
+                    client.Pfp = memoryStream.ToArray();
+                }
+            }
+            _context.Add(client);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["SubscriptionId"] = new SelectList(_context.Subscriptions, "Id", "Id", client.SubscriptionId);
-            return View(client);
+           
         }
 
         // GET: Clients/Edit/5
@@ -93,7 +113,7 @@ namespace SportClubs1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SubscriptionId,Name,Surname,Weight,Height,Age,Pfp")] Client client)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SubscriptionId,Name,Surname,Weight,Height,Age,Pfp,Login")] Client client)
         {
             if (id != client.Id)
             {

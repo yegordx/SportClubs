@@ -20,6 +20,7 @@ public partial class Client
     public int Age { get; set; }
 
     public byte[]? Pfp { get; set; }
+    public string? Login { get; set; }
 
     public virtual Subscription Subscription { get; set; } = null!;
 

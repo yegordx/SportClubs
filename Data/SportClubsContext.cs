@@ -42,6 +42,7 @@ public partial class SportClubsContext : DbContext
             entity.Property(e => e.Pfp).HasColumnName("pfp");
             entity.Property(e => e.SubscriptionId).HasColumnName("Subscription_ID");
             entity.Property(e => e.Surname).HasMaxLength(50);
+            entity.Property(e => e.Login).HasColumnType("nvarchar(MAX)");
 
             entity.HasOne(d => d.Subscription).WithMany(p => p.Clients)
                 .HasForeignKey(d => d.SubscriptionId)
@@ -75,6 +76,8 @@ public partial class SportClubsContext : DbContext
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Info).HasColumnType("nvarchar(MAX)");
+
 
             entity.HasMany(d => d.Clients).WithMany(p => p.GymAddresses)
                 .UsingEntity<Dictionary<string, object>>(
@@ -117,6 +120,7 @@ public partial class SportClubsContext : DbContext
             entity.Property(e => e.Profession).HasMaxLength(50);
             entity.Property(e => e.ScheduleId).HasColumnName("Schedule_ID");
             entity.Property(e => e.Sername).HasMaxLength(50);
+            entity.Property(e => e.Info).HasColumnType("nvarchar(MAX)");
 
             entity.HasOne(d => d.GymAddressNavigation).WithMany(p => p.Staff)
                 .HasForeignKey(d => d.GymAddress)

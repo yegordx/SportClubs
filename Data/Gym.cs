@@ -12,6 +12,8 @@ public partial class Gym
 
     public byte[]? Image { get; set; }
 
+    public string? Info { get; set; }
+
     public virtual ICollection<Staff> Staff { get; set; } = new List<Staff>();
 
     public virtual ICollection<TrainingMachine> TrainingMachines { get; set; } = new List<TrainingMachine>();

@@ -39,7 +39,7 @@
                         <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
                             <ul>
                                 <li>
-                                    <a href="#settings">Мій профіль</a>
+                                    <a href=" @Url.Action("DetailsLogin", "Clients", new { login = @UserManager.GetUserName(User) })">Мій профіль</a>
                                 </li>
                                 <li>
                                     <a href="Identity/Account/Logout">Вийти з акаунту</a>

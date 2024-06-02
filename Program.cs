@@ -7,7 +7,10 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SportClubsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(SportClubsContext))));
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<SportClubsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SportClubsContext")));
 
 //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationIdentityContext>();
 
@@ -17,11 +20,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.S
 builder.Services
  .AddDbContext<ApplicationIdentityContext>(options =>
 
-options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(ApplicationIdentityContext)), sqlOptions =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationIdentityContext"), sqlOptions =>
     sqlOptions.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name)));
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 

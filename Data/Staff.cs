@@ -18,6 +18,7 @@ public partial class Staff
     public string Profession { get; set; } = null!;
 
     public byte[]? Pfp { get; set; }
+    public string? Info { get; set; }
 
     public virtual Gym GymAddressNavigation { get; set; } = null!;
 

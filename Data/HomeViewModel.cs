@@ -12,5 +12,6 @@ public class HomeViewModel
     public List<TrainingMachine> TrainingMachines { get; set; }
 
     public List<Client> Clients { get; set; }
+
 }
 

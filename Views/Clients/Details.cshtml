@@ -44,7 +44,20 @@
             @Html.DisplayNameFor(model => model.Pfp)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pfp)
+            @if (Model.Pfp != null)
+            {
+                <img src="data:image /jpeg;base64,@Convert.ToBase64String(Model.Pfp)">
+            }
+            else
+            {
+                <img src="~staffpfp / none.jpg" />
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Login)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Login)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Subscription)

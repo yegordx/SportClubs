@@ -144,6 +144,7 @@ namespace SportClubs1.Areas.Identity.Pages.Account
                     //    await _signInManager.SignInAsync(user, isPersistent: false);
                     //    return LocalRedirect(returnUrl);
                     //}
+                    return RedirectToAction("Create", "Clients", new { login = Input.Email });
                 }
                 foreach (var error in result.Errors)
                 {
